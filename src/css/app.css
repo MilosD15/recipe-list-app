@@ -1,0 +1,22 @@
+@import-normalize; /* makes your application looks the same in every browser */
+@import "./tailwind.css";
+@import './font.css';
+
+* {
+    font-family: "Ubuntu", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.reloaded {
+    animation: fade-out 500ms ease forwards;
+}
+
+.theme-button {
+    @apply px-4 py-2 rounded-md transition-all duration-300;
+}
+
+@keyframes fade-out {
+    from { opacity: 0; }
+    to {opacity: 1; }
+}
