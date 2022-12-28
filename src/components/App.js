@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import RecipeList from "./RecipeList";
+import RecipeEdit from "./RecipeEdit";
 import '../css/app.css';
 import { v4 } from 'uuid';
 
@@ -49,8 +50,9 @@ function App() {
 
   return (
     <RecipeContext.Provider value={recipeContextValue}>
-      <div className="min-h-screen flex bg-zinc-900 text-zinc-100">
+      <div className="flex flex-col-reverse bg-zinc-900 text-zinc-100 md:flex-row md:min-h-screen">
         <RecipeList recipes={recipes} />
+        <RecipeEdit />
       </div>
     </RecipeContext.Provider>
   )
