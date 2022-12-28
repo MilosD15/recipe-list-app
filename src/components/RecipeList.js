@@ -8,15 +8,9 @@ export default function RecipeList({ recipes }) {
   return (
       <div className='recipes-list
       w-full 
-      border-r-0 
-      border-solid 
-      border-zinc-400 
-      border-t-2
       flex flex-col 
       items-center
-      md:w-1/2
-      md:border-r-2
-      md:border-t-0
+      md:flex-1
       md:min-h-screen
       '>
         <div className="pt-5 text-2xl">Recipes</div>

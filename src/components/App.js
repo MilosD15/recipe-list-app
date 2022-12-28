@@ -8,10 +8,14 @@ export const RecipeContext = React.createContext();
 export const APP_PREFIX = 'COOKING_WITH_REACT';
 
 function App() {
+  const [selectedRecipeId, setSelectedRecipeId] = useState();
   const [recipes, setRecipes] = useState(getInitialRecipes());
+  const selectedRecipe = recipes.find(recipe => recipe.id === selectedRecipeId);
+
   const recipeContextValue = {
     handleAddRecipe,
-    handleDeleteRecipe
+    handleDeleteRecipe,
+    handleSelectRecipe
   }
 
   useEffect(() => {
@@ -23,6 +27,10 @@ function App() {
     if (recipesJSON != null) return [...JSON.parse(recipesJSON)];
 
     return sampleRecipes;
+  }
+
+  function handleSelectRecipe(id) {
+    setSelectedRecipeId(id);
   }
 
   function handleAddRecipe() {
@@ -52,7 +60,7 @@ function App() {
     <RecipeContext.Provider value={recipeContextValue}>
       <div className="flex flex-col-reverse bg-zinc-900 text-zinc-100 md:flex-row md:min-h-screen">
         <RecipeList recipes={recipes} />
-        <RecipeEdit />
+        {selectedRecipe && <RecipeEdit recipe={selectedRecipe} />}
       </div>
     </RecipeContext.Provider>
   )

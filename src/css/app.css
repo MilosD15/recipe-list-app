@@ -6,6 +6,16 @@ body {
     @apply bg-zinc-900;
 }
 
+/* HIDING SCROLLBAR */
+body::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
 * {
     font-family: "Ubuntu", system-ui;
     font-weight: 400;

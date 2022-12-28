@@ -4,7 +4,7 @@ import { RecipeContext } from './App';
 import { motion } from 'framer-motion';
 
 export default function Recipe(props) {
-  const {handleDeleteRecipe} = useContext(RecipeContext);
+  const { handleDeleteRecipe, handleSelectRecipe } = useContext(RecipeContext);
   const {
     id,
     name, 
@@ -24,7 +24,12 @@ export default function Recipe(props) {
         <div className="flex justify-between py-3 items-center">
           <h3 className="text-xl">{name}</h3>
           <div className="flex gap-4">
-            <button className='theme-button bg-blue-500 hover:bg-blue-600 focus:bg-blue-600'>Edit</button>
+            <button 
+              className='theme-button bg-blue-500 hover:bg-blue-600 focus:bg-blue-600'
+              onClick={() => handleSelectRecipe(id)}
+            >
+              Edit
+            </button>
             <button 
               className='theme-button bg-red-600 hover:bg-red-700 focus:bg-red-700'
               onClick={() => handleDeleteRecipe(id)}
