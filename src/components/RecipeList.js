@@ -21,7 +21,9 @@ export default function RecipeList({ recipes }) {
             )
           })}
         </div>
-        <button className="theme-button bg-zinc-700 my-5 hover:text-zinc-700 hover:bg-zinc-300 focus:text-zinc-700 focus:bg-zinc-300 mb-6" onClick={() => handleAddRecipe()}>Add Recipe</button>
+        <button 
+        className="theme-button bg-zinc-700 my-5 hover:text-zinc-700 hover:bg-zinc-300 focus:text-zinc-700 focus:bg-zinc-300 mb-6" 
+        onClick={() => handleAddRecipe()}>Add Recipe</button>
       </div>
   )
 }

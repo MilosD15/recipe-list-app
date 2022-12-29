@@ -1,11 +1,44 @@
-import React from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import IngredientEdit from "./IngredientEdit";
+import { RecipeContext } from "./App";
+import { motion } from 'framer-motion';
+import { v4 } from 'uuid';
 
 export default function RecipeEdit({ recipe }) {
-  const { name, cookTime, servings, instructions, ingredients } = recipe;
+  const { id, name, cookTime, servings, instructions, ingredients } = recipe;
+  const { handleChangeRecipe, handleSelectRecipe } = useContext(RecipeContext);
+  const inputNameRef = useRef();
+
+  useEffect(() => {
+    inputNameRef.current.focus();
+  }, []);
+
+  function handleRecipeChanges(changes) {
+    handleChangeRecipe(id, { ...recipe, ...changes });
+  }
+
+  function handleIngredientsChanges(id, newIngredient) {
+    const newIngredients = [...ingredients];
+    let targetedIndex = newIngredients.findIndex(ingredient => ingredient.id === id);
+    newIngredients[targetedIndex] = newIngredient;
+    handleRecipeChanges({ ingredients: newIngredients });
+  }
+
+  function handleAddIngredient() {
+    const newIngredient = {
+      id: v4(),
+      name: '',
+      amount: ''
+    }
+    handleRecipeChanges({ ingredients: [...ingredients, newIngredient] });
+  }
+
+  function handleDeleteIngredient(id) {
+    handleRecipeChanges({ ingredients: ingredients.filter(ingredient => ingredient.id !== id) });
+  }
   
   return (
-    <div className="
+    <motion.div className="
       w-full 
       border-r-0 
       border-solid 
@@ -13,25 +46,32 @@ export default function RecipeEdit({ recipe }) {
       border-b-2
       md:w-1/2
       md:border-l-2
-      md:border-b-0">
+      md:border-b-0"
+      initial={{opacity: 0}}
+      animate={{opacity: 1}}
+      transition={{duration: 0.3}}>
       <h2 className="text-2xl text-center pt-5 pb-4">Edit Recipe</h2>
-      <button className="text-4xl px-3 absolute top-0 right-0 mr-1 mt-1">&times;</button>
+      <button className="text-4xl px-3 absolute top-0 right-0 mr-1 mt-1" onClick={() => handleSelectRecipe(undefined)}>&times;</button>
       <form id="change-recipe-data" className="p-4 pt-0 w-full">
         <div className="form-group">
           <label htmlFor="recipe-name" className="form-label">Name</label>
-          <input type="text" name="recipe-name" id="recipe-name" className="form-input" value={name} />
+          <input type="text" name="recipe-name" id="recipe-name" className="form-input" ref={inputNameRef}
+          onChange={e => { handleRecipeChanges({ name: e.target.value }) }} value={name} />
         </div>
         <div className="form-group">
           <label htmlFor="recipe-cook-time" className="form-label">Cook time</label>
-          <input type="text" name="recipe-cook-time" id="recipe-cook-time" className="form-input" value={cookTime} />
+          <input type="text" name="recipe-cook-time" id="recipe-cook-time" className="form-input" value={cookTime}
+          onChange={e => { handleRecipeChanges({ cookTime: e.target.value }) }} />
         </div>
         <div className="form-group">
           <label htmlFor="recipe-servings" className="form-label">Servings</label>
-          <input type="number" min="1" name="recipe-servings" id="recipe-servings" className="form-input" value={servings} />
+          <input type="number" min="1" name="recipe-servings" id="recipe-servings" className="form-input" value={servings}
+          onChange={e => { handleRecipeChanges({ servings: parseInt(e.target.value) || 1 }) }} />
         </div>
         <div className="form-group">
           <label htmlFor="recipe-instructions" className="form-label">Instructions</label>
-          <textarea id="recipe-instructions" name="recipe-instructions" className="form-input resize-y" rows="4">{instructions}</textarea>
+          <textarea id="recipe-instructions" name="recipe-instructions" className="form-input resize-y" rows="4" 
+          value={instructions} onChange={e => { handleRecipeChanges({ instructions: e.target.value }) }} />
         </div>
         <div className="form-group flex-col sm:flex-row md:flex-col lg:flex-row">
           <h3 className="form-label">Ingredients</h3>
@@ -47,16 +87,20 @@ export default function RecipeEdit({ recipe }) {
                 {
                   ingredients.map(ingredient => {
                     return (
-                      <IngredientEdit key={ingredient.id} ingredient={ingredient} />
+                      <IngredientEdit key={ingredient.id} 
+                      handleIngredientsChanges={handleIngredientsChanges} 
+                      ingredient={ingredient}
+                      handleDeleteIngredient={handleDeleteIngredient} />
                     )
                   })
                 }
               </tbody>
             </table>
-            <button className="theme-button bg-blue-500 hover:bg-blue-600 focus:bg-blue-600 m-auto">Add Ingredient</button>
+            <button className="theme-button bg-blue-500 hover:bg-blue-600 focus:bg-blue-600 m-auto"
+            onClick={e => {e.preventDefault();  handleAddIngredient();}}>Add Ingredient</button>
           </div>
         </div>
       </form>
-    </div>
+    </motion.div>
   )
 }

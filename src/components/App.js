@@ -15,7 +15,8 @@ function App() {
   const recipeContextValue = {
     handleAddRecipe,
     handleDeleteRecipe,
-    handleSelectRecipe
+    handleSelectRecipe,
+    handleChangeRecipe,
   }
 
   useEffect(() => {
@@ -29,6 +30,13 @@ function App() {
     return sampleRecipes;
   }
 
+  function handleChangeRecipe(id, newRecipe) {
+    const newRecipes = [...recipes];
+    let targetedIndex = newRecipes.findIndex(recipe => recipe.id === id);
+    newRecipes[targetedIndex] = newRecipe;
+    setRecipes(newRecipes);
+  }
+
   function handleSelectRecipe(id) {
     setSelectedRecipeId(id);
   }
@@ -36,23 +44,28 @@ function App() {
   function handleAddRecipe() {
     const newRecipe = {
       id: v4(),
-      name: "Name",
-      cookTime: "1:00h",
+      name: "",
+      cookTime: "",
       servings: 1,
-      instructions: "/",
+      instructions: "",
       ingredients: [
         {
           id: v4(),
-          name: "ingredient",
-          amount: "amount"
+          name: "",
+          amount: ""
         }
       ]
     }
 
+    setSelectedRecipeId(newRecipe.id);
     setRecipes([...recipes, newRecipe]);
   }
 
   function handleDeleteRecipe(id) {
+    if (selectedRecipeId != null && selectedRecipeId === id) {
+      setSelectedRecipeId(undefined);
+    }
+
     setRecipes(recipes.filter(recipe => recipe.id !== id));
   }
 
@@ -69,7 +82,7 @@ function App() {
 const sampleRecipes = [
   {
     id: 1,
-    name: "Plain Chicken",
+    name: "Plain Chicken (Sample Recipe)",
     cookTime: "1:45h",
     servings: 3,
     instructions: "1. Put salt on chicken\n2. Put chicken in oven\n3. Eat chicken",
@@ -86,25 +99,25 @@ const sampleRecipes = [
       }
     ]
   },
-  {
-    id: 2,
-    name: "Plain Pork",
-    cookTime: "0:45h",
-    servings: 5,
-    instructions: "1. Put paprika on pork\n2. Put pork in oven\n3. Eat pork",
-    ingredients: [
-      {
-        id: 1,
-        name: "Pork",
-        amount: "3 Pounds"
-      },
-      {
-        id: 2,
-        name: "Paprika",
-        amount: "2 Tbs"
-      }
-    ]
-  }
-]
+  // {
+  //   id: 2,
+  //   name: "Plain Pork",
+  //   cookTime: "0:45h",
+  //   servings: 5,
+  //   instructions: "1. Put paprika on pork\n2. Put pork in oven\n3. Eat pork",
+  //   ingredients: [
+  //     {
+  //       id: 1,
+  //       name: "Pork",
+  //       amount: "3 Pounds"
+  //     },
+  //     {
+  //       id: 2,
+  //       name: "Paprika",
+  //       amount: "2 Tbs"
+  //     }
+  //   ]
+  // }
+];
 
 export default App;
