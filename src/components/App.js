@@ -11,12 +11,14 @@ function App() {
   const [selectedRecipeId, setSelectedRecipeId] = useState();
   const [recipes, setRecipes] = useState(getInitialRecipes());
   const selectedRecipe = recipes.find(recipe => recipe.id === selectedRecipeId);
+  const [searchBarRecipeIds, setSearchBarRecipeIds] = useState(getRecipeIds([...recipes]));
 
   const recipeContextValue = {
     handleAddRecipe,
     handleDeleteRecipe,
     handleSelectRecipe,
     handleChangeRecipe,
+    handleRecipeSearch
   }
 
   useEffect(() => {
@@ -28,6 +30,47 @@ function App() {
     if (recipesJSON != null) return [...JSON.parse(recipesJSON)];
 
     return sampleRecipes;
+  }
+
+  function handleRecipeSearch(term) {
+    const newRecipes = [...recipes];
+    if (term === '') {
+      setSearchBarRecipeIds(getRecipeIds(newRecipes)); return;
+    }
+
+    const searchedRecipes = newRecipes.filter(r => objectHasThisTerm(term, r));
+    setSearchBarRecipeIds(getRecipeIds(searchedRecipes));
+  }
+
+  function getRecipeIds(recipes) {
+    return recipes.map(r => r.id);
+  }
+
+  function objectHasThisTerm(term, object) {
+    return Object.keys(object).some(key => {
+      // we don't take id of any object into consideration
+      if (key === "id") return false;
+
+      // when variable is a function
+      if (typeof object[key] === "function") return false;
+
+      // when variable is an array
+      if (typeof object[key] === "object" && Array.isArray(object[key])) {
+        return object[key].some(object => objectHasThisTerm(term, object));
+      }
+
+      // when variable is an object
+      if (typeof object[key] === "object" && !Array.isArray(object[key])) {
+        return objectHasThisTerm(term, object);
+      }
+      
+      // when variable is some primitive value
+      const objectValueString = object[key].toString();
+      const termRegex = new RegExp(term, "gi");
+      console.log(termRegex)
+      console.log(objectValueString.includes(term))
+      return termRegex.test(objectValueString);
+    });
   }
 
   function handleChangeRecipe(id, newRecipe) {
@@ -59,6 +102,7 @@ function App() {
 
     setSelectedRecipeId(newRecipe.id);
     setRecipes([...recipes, newRecipe]);
+    setSearchBarRecipeIds([...searchBarRecipeIds, newRecipe.id]);
   }
 
   function handleDeleteRecipe(id) {
@@ -72,7 +116,7 @@ function App() {
   return (
     <RecipeContext.Provider value={recipeContextValue}>
       <div className="flex flex-col-reverse bg-zinc-900 text-zinc-100 md:flex-row md:min-h-screen">
-        <RecipeList recipes={recipes} />
+        <RecipeList recipes={recipes} searchBarRecipeIds={searchBarRecipeIds} />
         {selectedRecipe && <RecipeEdit recipe={selectedRecipe} />}
       </div>
     </RecipeContext.Provider>

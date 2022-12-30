@@ -1,9 +1,12 @@
 import React, { useContext } from 'react';
 import Recipe from './Recipe';
 import { RecipeContext } from './App';
+import RecipeSearchBar from "./RecipeSearchBar";
 
-export default function RecipeList({ recipes }) {
+export default function RecipeList({ recipes, searchBarRecipeIds }) {
   const { handleAddRecipe } = useContext(RecipeContext);
+
+  const selectedRecipes = recipes.filter(r => searchBarRecipeIds.includes(r.id));
 
   return (
       <div className='recipes-list
@@ -14,8 +17,9 @@ export default function RecipeList({ recipes }) {
       md:min-h-screen
       '>
         <div className="pt-5 text-2xl">Recipes</div>
+        {recipes.length !== 0 &&  <RecipeSearchBar />}
         <div className='w-full'>
-        {recipes.map(recipe => {
+        {selectedRecipes.map(recipe => {
             return (
               <Recipe key={recipe.id} {...recipe} />
             )
@@ -23,7 +27,7 @@ export default function RecipeList({ recipes }) {
         </div>
         <button 
         className="theme-button bg-zinc-700 my-5 hover:text-zinc-700 hover:bg-zinc-300 focus:text-zinc-700 focus:bg-zinc-300 mb-6" 
-        onClick={() => handleAddRecipe()}>Add Recipe</button>
+        onClick={() => { handleAddRecipe() }}>Add Recipe</button>
       </div>
   )
 }
