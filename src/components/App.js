@@ -67,8 +67,6 @@ function App() {
       // when variable is some primitive value
       const objectValueString = object[key].toString();
       const termRegex = new RegExp(term, "gi");
-      console.log(termRegex)
-      console.log(objectValueString.includes(term))
       return termRegex.test(objectValueString);
     });
   }
@@ -96,6 +94,12 @@ function App() {
           id: v4(),
           name: "",
           amount: ""
+        }
+      ],
+      authors: [
+        {
+          id: v4(),
+          name: ""
         }
       ]
     }
@@ -141,6 +145,10 @@ const sampleRecipes = [
         name: "Salt",
         amount: "1 Tbs"
       }
+    ],
+    authors: [
+      { id: 1, name: "John Smith" },
+      { id: 2, name: "My mum" }
     ]
   },
   // {

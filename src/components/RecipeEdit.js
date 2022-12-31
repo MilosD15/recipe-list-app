@@ -3,9 +3,10 @@ import IngredientEdit from "./IngredientEdit";
 import { RecipeContext } from "./App";
 import { motion } from 'framer-motion';
 import { v4 } from 'uuid';
+import AuthorEdit from "./AuthorEdit";
 
 export default function RecipeEdit({ recipe }) {
-  const { id, name, cookTime, servings, instructions, ingredients } = recipe;
+  const { id, name, cookTime, servings, instructions, ingredients, authors } = recipe;
   const { handleChangeRecipe, handleSelectRecipe } = useContext(RecipeContext);
   const inputNameRef = useRef();
 
@@ -24,6 +25,13 @@ export default function RecipeEdit({ recipe }) {
     handleRecipeChanges({ ingredients: newIngredients });
   }
 
+  function handleAuthorsChanges(id, newAuthor) {
+    const newAuthors = [...authors];
+    let targetedIndex = newAuthors.findIndex(a => a.id === id);
+    newAuthors[targetedIndex] = newAuthor;
+    handleRecipeChanges({ authors: newAuthors });
+  }
+
   function handleAddIngredient() {
     const newIngredient = {
       id: v4(),
@@ -33,8 +41,21 @@ export default function RecipeEdit({ recipe }) {
     handleRecipeChanges({ ingredients: [...ingredients, newIngredient] });
   }
 
+  function handleAddAuthor() {
+    const newAuthor = {
+      id: v4(),
+      name: '',
+      amount: ''
+    }
+    handleRecipeChanges({ authors: [...authors, newAuthor] });
+  }
+
   function handleDeleteIngredient(id) {
     handleRecipeChanges({ ingredients: ingredients.filter(ingredient => ingredient.id !== id) });
+  }
+
+  function handleDeleteAuthor(id) {
+    handleRecipeChanges({ authors: authors.filter(a => a.id !== id) });
   }
   
   return (
@@ -97,7 +118,28 @@ export default function RecipeEdit({ recipe }) {
               </tbody>
             </table>
             <button className="theme-button bg-blue-500 hover:bg-blue-600 focus:bg-blue-600 m-auto"
-            onClick={e => {e.preventDefault();  handleAddIngredient();}}>Add Ingredient</button>
+            onClick={e => {e.preventDefault(); handleAddIngredient();}}>Add Ingredient</button>
+          </div>
+        </div>
+        <div className="form-group flex-col sm:flex-row md:flex-col lg:flex-row">
+          <h3 className="form-label">Authors</h3>
+          <div className="flex-1 w-[80%] m-auto flex flex-col gap-3">
+            <div className="">
+              {
+                authors.map(author => {
+                  return (
+                    <AuthorEdit 
+                      key={author.id} 
+                      author={author}
+                      handleAuthorsChanges={handleAuthorsChanges}
+                      handleDeleteAuthor={handleDeleteAuthor}
+                    />
+                  )
+                })
+              }
+            </div>
+            <button className="theme-button bg-blue-500 hover:bg-blue-600 focus:bg-blue-600 m-auto"
+            onClick={e => {e.preventDefault(); handleAddAuthor(); }}>Add Author</button>
           </div>
         </div>
       </form>

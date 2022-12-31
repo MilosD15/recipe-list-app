@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import IngredientsList from './IngredientsList'
 import { RecipeContext } from './App';
 import { motion } from 'framer-motion';
+import AuthorList from "./AuthorList";
 
 export default function Recipe(props) {
   const { handleDeleteRecipe, handleSelectRecipe } = useContext(RecipeContext);
@@ -11,7 +12,8 @@ export default function Recipe(props) {
     cookTime, 
     servings, 
     instructions, 
-    ingredients
+    ingredients,
+    authors
   } = props;
 
   return (
@@ -51,6 +53,10 @@ export default function Recipe(props) {
         <div className="pb-1">
           <div>Ingredients:</div>
           <IngredientsList ingredients={ingredients} />
+        </div>
+        <div className="pb-1">
+          <div>Authors:</div>
+          <AuthorList authors={authors} />
         </div>
     </motion.div>
   )
