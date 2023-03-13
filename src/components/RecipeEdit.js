@@ -4,6 +4,7 @@ import { RecipeContext } from "./App";
 import { motion } from 'framer-motion';
 import { v4 } from 'uuid';
 import AuthorEdit from "./AuthorEdit";
+import UploadImage from "./UploadImage";
 
 export default function RecipeEdit({ recipe }) {
   const { id, name, cookTime, servings, instructions, ingredients, authors } = recipe;
@@ -93,6 +94,10 @@ export default function RecipeEdit({ recipe }) {
           <label htmlFor="recipe-instructions" className="form-label">Instructions</label>
           <textarea id="recipe-instructions" name="recipe-instructions" className="form-input resize-y" rows="4" 
           value={instructions} onChange={e => { handleRecipeChanges({ instructions: e.target.value }) }} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="recipe-image" className="form-label py-2">Picture</label>
+          <UploadImage id="recipe-image" />
         </div>
         <div className="form-group flex-col sm:flex-row md:flex-col lg:flex-row">
           <h3 className="form-label">Ingredients</h3>
