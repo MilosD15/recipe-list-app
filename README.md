@@ -2,4 +2,4 @@
 
 Recipe App using React and Firebase
 
-Preview: https://recipeslist.netlify.app/
+Preview: https://recipe-list-76d36.web.app/
