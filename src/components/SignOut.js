@@ -20,7 +20,7 @@ export default function SignOut({ userImgUrl }) {
 
   return (
     <button onClick={handleSignOut} className="absolute right-3 theme-button bg-zinc-700 my-3 hover:text-zinc-700 hover:bg-zinc-300 
-      focus:text-zinc-700 focus:bg-zinc-300 flex h-10 items-center gap-4 !px-1 !rounded-lg !pl-4">
+      focus-visible:text-zinc-700 focus-visible:bg-zinc-300 flex h-10 items-center gap-4 !px-1 !rounded-lg !pl-4">
       <div>Sign out</div>
       {userImgUrl && (
         <div className="w-9 h-9 overflow-hidden rounded-xl">

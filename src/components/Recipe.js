@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import IngredientsList from './IngredientsList'
 import { RecipeContext } from './App';
 import { motion } from 'framer-motion';
 import AuthorList from "./AuthorList";
-import sampleRecipeImage from '../images/sample-recipe.webp';
+import '../css/imageLoader.css';
 
 export default function Recipe(props) {
   const { handleDeleteRecipe, handleSelectRecipe } = useContext(RecipeContext);
@@ -17,6 +17,15 @@ export default function Recipe(props) {
     ingredients, 
     authors
   } = props;
+  const recipeImageRef = useRef();
+  const [loaderState, setLoaderState] = useState("hidden");
+
+  useEffect(() => {
+    setLoaderState("visible");
+    recipeImageRef.current.addEventListener("load", () => {
+      setLoaderState("hidden");
+    });
+  }, []);
 
   const setRecipeImage = () => {
     if (!imgURL) {
@@ -37,17 +46,17 @@ export default function Recipe(props) {
       animate={{opacity: 1}}
       transition={{duration: 0.3}}
       >
-        <div className="flex justify-between py-3 items-start min-[400px]:items-center">
+        <div className="flex justify-between py-3 items-start min-[400px]:items-center gap-2">
           <h3 className="text-xl">{name}</h3>
           <div className="flex gap-4 flex-col min-[400px]:flex-row">
             <button 
-              className='theme-button bg-blue-500 hover:bg-blue-600 focus:bg-blue-600'
+              className='theme-button bg-blue-500 hover:bg-blue-600 focus-visible:bg-blue-600'
               onClick={() => handleSelectRecipe(id)}
             >
               Edit
             </button>
             <button 
-              className='theme-button bg-red-600 hover:bg-red-700 focus:bg-red-700'
+              className='theme-button bg-red-600 hover:bg-red-700 focus-visible:bg-red-700'
               onClick={() => handleDeleteRecipe(id)}
             >Delete</button>
           </div>
@@ -60,20 +69,30 @@ export default function Recipe(props) {
           <span>Servings: </span>
           <span className="font-bold">{servings}</span>
         </div>
-        <div className="pb-1 sm:mr-56 lg:mr-72">
+        <div className="pb-1 sm:mr-56 lg:mr-72 leading-relaxed">
           <span>Instructions: </span>
           <div className="font-bold pl-4 whitespace-pre-wrap">{instructions}</div>
         </div>
-        <div className="pb-1 sm:mr-56 lg:mr-72">
+        {ingredients && <div className="pb-1 sm:mr-56 lg:mr-72">
           <div>Ingredients:</div>
           <IngredientsList ingredients={ingredients} />
-        </div>
+        </div>}
         <div className="pb-1 sm:mr-56 lg:mr-72">
           <div>Authors:</div>
           <AuthorList authors={authors} />
         </div>
-        <div className="relative my-2 rounded-md overflow-hidden w-full aspect-video mx-auto min-[400px]:w-5/6 sm:absolute sm:w-52 sm:bottom-0 sm:right-3 lg:w-72">
-          <img src={setRecipeImage()} alt="Sample Recipe" className="absolute w-full object-cover left-1/2 top-1/2 -translate-x-2/4 -translate-y-2/4" />
+        <div className="relative my-3 rounded-md overflow-hidden w-full aspect-video mx-auto min-[400px]:w-5/6 sm:absolute sm:w-52 sm:bottom-0 sm:right-3 lg:w-72">
+          <img src={setRecipeImage()} ref={recipeImageRef} alt="Sample Recipe" className="absolute w-full object-cover left-1/2 top-1/2 -translate-x-2/4 -translate-y-2/4" />
+          <div className="dot-spinner" data-state={loaderState} data-img-type="recipe-img">
+            <div className="dot-spinner__dot"></div>
+            <div className="dot-spinner__dot"></div>
+            <div className="dot-spinner__dot"></div>
+            <div className="dot-spinner__dot"></div>
+            <div className="dot-spinner__dot"></div>
+            <div className="dot-spinner__dot"></div>
+            <div className="dot-spinner__dot"></div>
+            <div className="dot-spinner__dot"></div>
+          </div>
         </div>
     </motion.div>
   )

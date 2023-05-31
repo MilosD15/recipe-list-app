@@ -24,7 +24,7 @@ export default function AuthorEdit(props) {
         duration-300 
         bg-red-600 
         hover:bg-red-700 
-        focus:bg-red-700 
+        focus-visible:bg-red-700 
         px-2 
         py-0 
         mb-1

@@ -5,14 +5,17 @@ import { motion } from 'framer-motion';
 import { v4 } from 'uuid';
 import AuthorEdit from "./AuthorEdit";
 import UploadImage from "./UploadImage";
+import { UserContext } from "./App";
 
 export default function RecipeEdit({ recipe }) {
-  const { id, name, cookTime, servings, instructions, ingredients, authors } = recipe;
+  const { id, name, cookTime, servings, instructions, ingredients, authors, imgURL } = recipe;
   const { handleChangeRecipe, handleSelectRecipe } = useContext(RecipeContext);
+  const { user } = useContext(UserContext);
   const inputNameRef = useRef();
 
   useEffect(() => {
     inputNameRef.current.focus();
+    // console.log(recipe);
   }, []);
 
   function handleRecipeChanges(changes) {
@@ -95,10 +98,10 @@ export default function RecipeEdit({ recipe }) {
           <textarea id="recipe-instructions" name="recipe-instructions" className="form-input resize-y" rows="4" 
           value={instructions} onChange={e => { handleRecipeChanges({ instructions: e.target.value }) }} />
         </div>
-        <div className="form-group">
+        {user.id && <div className="form-group">
           <label htmlFor="recipe-image" className="form-label py-2">Picture</label>
-          <UploadImage id="recipe-image" />
-        </div>
+          <UploadImage id="recipe-image" handleRecipeChanges={handleRecipeChanges} imgURL={imgURL} />
+        </div>}
         <div className="form-group flex-col sm:flex-row md:flex-col lg:flex-row">
           <h3 className="form-label">Ingredients</h3>
           <div className="flex-1 flex flex-col gap-3 w-full">
@@ -122,13 +125,13 @@ export default function RecipeEdit({ recipe }) {
                 }
               </tbody>
             </table>
-            <button className="theme-button bg-blue-500 hover:bg-blue-600 focus:bg-blue-600 m-auto"
+            <button className="theme-button bg-blue-500 hover:bg-blue-600 focus-visible:bg-blue-600 m-auto"
             onClick={e => {e.preventDefault(); handleAddIngredient();}}>Add Ingredient</button>
           </div>
         </div>
         <div className="form-group flex-col sm:flex-row md:flex-col lg:flex-row">
           <h3 className="form-label">Authors</h3>
-          <div className="flex-1 w-[80%] m-auto flex flex-col gap-3">
+          <div className="flex-1 w-full m-auto flex flex-col gap-3">
             <div className="">
               {
                 authors.map(author => {
@@ -143,7 +146,7 @@ export default function RecipeEdit({ recipe }) {
                 })
               }
             </div>
-            <button className="theme-button bg-blue-500 hover:bg-blue-600 focus:bg-blue-600 m-auto"
+            <button className="theme-button bg-blue-500 hover:bg-blue-600 focus-visible:bg-blue-600 m-auto"
             onClick={e => {e.preventDefault(); handleAddAuthor(); }}>Add Author</button>
           </div>
         </div>

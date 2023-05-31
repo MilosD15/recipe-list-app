@@ -2,7 +2,7 @@
 const BASE_URI = "https://api.edamam.com/api/recipes/v2";
 
 
-async function getRandomRecipes(count) {
+async function getRandomRecipes(from, count) {
   try {
     const options = {
       method: 'GET',
@@ -12,7 +12,7 @@ async function getRandomRecipes(count) {
       }
     };
 
-    const response = await fetch(`https://tasty.p.rapidapi.com/recipes/list?from=0&size=${count}`, options);
+    const response = await fetch(`https://tasty.p.rapidapi.com/recipes/list?from=${from}&size=${count}`, options);
     const data = await response.json();
     return data;
   } catch(err) {

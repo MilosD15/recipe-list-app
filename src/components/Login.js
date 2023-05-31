@@ -1,12 +1,22 @@
 import React, { useContext } from 'react';
 import GoogleLoginBtn from "./GoogleLoginBtn";
 import randomRecipeImage from '../images/random-recipe-image.webp';
-import { UserContext } from "./App";
+import { UserContext, LocalStorageContext } from "./App";
 import { sampleRecipe } from "./sampleRecipe";
 import { motion } from 'framer-motion';
 
 export default function Login() {
   const { setUser } = useContext(UserContext);
+  const { loadRecipesFromLocalStorage } = useContext(LocalStorageContext);
+
+  const handleNonLoggedInUser = () => {
+    const lsRecipes = loadRecipesFromLocalStorage();
+    if (lsRecipes) {
+      setUser({ name: 'unknown', recipes: lsRecipes });
+    } else {
+      setUser({ name: 'unknown', recipes: [sampleRecipe] });
+    }
+  }
 
   return (
     <motion.div 
@@ -24,7 +34,7 @@ export default function Login() {
       <div className="text-white flex flex-col justify-center items-center text-md md:text-lg">
         <GoogleLoginBtn />
         <div className="text-lg">or</div>
-        <button onClick={() => { setUser({ name: 'unknown', recipes: sampleRecipe }) }} className="theme-button bg-zinc-700 my-3 hover:text-zinc-700 hover:bg-zinc-300 focus:text-zinc-700 focus:bg-zinc-300">Proceed without logging in</button>
+        <button onClick={handleNonLoggedInUser} className="theme-button bg-zinc-700 my-3 hover:text-zinc-700 hover:bg-zinc-300 focus-visible:text-zinc-700 focus-visible:bg-zinc-300">Proceed without logging in</button>
       </div>
     </motion.div>
   )

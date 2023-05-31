@@ -1,4 +1,4 @@
-export const sampleRecipe = [{
+export const sampleRecipe = {
   id: 1,
   name: "Plain Chicken (Sample Recipe)", // name (string)
   cookTime: "1:45h", // total_time_minutes (number)
@@ -21,4 +21,4 @@ export const sampleRecipe = [{
     { id: 1, name: "John Smith" }, // unknown (source: Tasty API - Rapid API)
     { id: 2, name: "My mum" }
   ]
-}];
+};
