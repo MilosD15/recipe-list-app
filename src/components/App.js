@@ -36,11 +36,6 @@ function App() {
   //   });
   // }, [user]);
 
-  // NEXT TASKS
-  // check security rules for firebase storage and firestore
-  // check everything one more time
-  // deploy
-
   useEffect(() => {
     const loggedInUserId = localStorage.getItem(`${APP_PREFIX}-loggedInUserId`);
     loggedInUserId && getUser(loggedInUserId).then(userData => {
