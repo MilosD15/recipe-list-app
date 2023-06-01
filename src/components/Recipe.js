@@ -82,7 +82,6 @@ export default function Recipe(props) {
           <AuthorList authors={authors} />
         </div>
         <div className="relative my-3 rounded-md overflow-hidden w-full aspect-video mx-auto min-[400px]:w-5/6 sm:absolute sm:w-52 sm:bottom-0 sm:right-3 lg:w-72">
-          <img src={setRecipeImage()} ref={recipeImageRef} alt="Sample Recipe" className="absolute w-full object-cover left-1/2 top-1/2 -translate-x-2/4 -translate-y-2/4" />
           <div className="dot-spinner" data-state={loaderState} data-img-type="recipe-img">
             <div className="dot-spinner__dot"></div>
             <div className="dot-spinner__dot"></div>
@@ -93,6 +92,7 @@ export default function Recipe(props) {
             <div className="dot-spinner__dot"></div>
             <div className="dot-spinner__dot"></div>
           </div>
+          <img src={setRecipeImage()} ref={recipeImageRef} alt="Sample Recipe" className="absolute w-full object-cover left-1/2 top-1/2 -translate-x-2/4 -translate-y-2/4" />
         </div>
     </motion.div>
   )
